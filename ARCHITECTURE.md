@@ -150,33 +150,44 @@ Solved problems sync the same way, with their own schedule for each platform. CS
 
 ## 5. Data model (main tables)
 
+**Events**
+
 ```mermaid
 erDiagram
   profiles ||--o{ event_registrations : registers
-  profiles ||--o{ event_attendance : "is marked"
-  profiles ||--o{ event_feedback : gives
-  profiles ||--o{ solve_log : solved
-  profiles ||--o{ cohort_members : joins
-  profiles ||--o{ cohort_program_managers : manages
-
   events ||--o{ event_registrations : has
   events ||--o{ event_teams : has
   event_teams ||--o{ event_registrations : groups
   events ||--o{ event_attendance : has
+  profiles ||--o{ event_attendance : "is marked"
   events ||--o{ event_feedback : collects
-  events ||--o{ event_cohorts : "limited to"
+  profiles ||--o{ event_feedback : gives
   events ||--o{ event_standings : "frozen results"
+```
 
+**Cohorts and training programs**
+
+```mermaid
+erDiagram
   cohorts ||--o{ cohort_members : has
-  cohorts ||--o{ event_cohorts : scopes
+  profiles ||--o{ cohort_members : joins
+  cohorts ||--o{ event_cohorts : "can limit events"
   cohorts ||--o{ cohort_programs : runs
   cohort_programs ||--o{ cohort_program_sections : "weeks and resources"
   cohort_program_sections ||--o{ cohort_program_items : "problems and links"
   cohort_programs ||--o{ cohort_program_managers : "edited by"
+  profiles ||--o{ cohort_program_managers : manages
+```
 
+**Tracking and syncs**
+
+```mermaid
+erDiagram
+  profiles ||--o{ solve_log : solved
+  profiles ||--o{ rating_history : "rating over time"
   ladders ||--o{ ladder_problems : contains
-
   rating_syncs ||--o{ rating_sync_queue : "work items"
+  profiles ||--o{ rating_sync_queue : "synced in"
 ```
 
 Rules every table follows:
